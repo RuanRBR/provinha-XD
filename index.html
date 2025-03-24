@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo1</title>
+    <title>Jogo da Cobrinha</title>
     <style>
         body {
             display: flex;
@@ -13,10 +13,14 @@
         }
         canvas {
             margin-top: 100px;
-            background-color: gray;
+            background-color: rgb(98, 88, 151);
         }
         #score {
             margin-top: 20px;
+            font-size: 24px;
+        }
+        #record {
+            margin-top: 10px;
             font-size: 24px;
         }
     </style>
@@ -24,7 +28,7 @@
 <body>
     <canvas id="jogoCanvas" width="800" height="400"></canvas>
     <div id="score">Score: 0</div>
+    <div id="record">Record: 0</div>
     <script src="script.js"></script>
 </body>
 </html>
-
