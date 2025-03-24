@@ -41,7 +41,7 @@ class Snake {
     constructor() {
         this.parts = [new SnakePart(100, 200, 20, 20)];
         this.direction = 'right';
-        this.speed = 1;
+        this.speed = 3;
     }
 
     update() {
@@ -70,7 +70,7 @@ class Snake {
 
     draw() {
         this.parts.forEach(part => {
-            ctx.fillStyle = 'green';
+            ctx.fillStyle = '#0eff00';
             ctx.fillRect(part.x, part.y, part.largura, part.altura);
         });
     }
@@ -114,46 +114,49 @@ class Snake {
         }
         food.x = Math.floor(Math.random() * (canvas.width - 20));
         food.y = Math.floor(Math.random() * (canvas.height - 20));
-        this.speed += 1;
-        this.parts.push(new SnakePart(food.x, food.y, 20, 20));
+    
 
+        this.speed += .1;
+    
+        this.parts.push(new SnakePart(food.x, food.y, 20, 20));
+    
         const scoreElement = document.getElementById('score');
         const score = parseInt(scoreElement.innerText.split(': ')[1]) + 1;
         scoreElement.innerText = `Score: ${score}`;
-
+    
         const recordElement = document.getElementById('record');
         const record = parseInt(localStorage.getItem('record')) || 0;
-
+    
         if (score > record) {
             localStorage.setItem('record', score);
             recordElement.innerText = `Record: ${score}`;
         }
+    
         comida.foodItems.push({ x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 });
-
     }
 }
 class Comida {
     constructor() {
-        this.foodItems = [
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 }
-        ];
+        this.foodItems = [];
+        this.generateFood();
+    }
+
+    generateFood() {
+        const maxFoodItems = 10;
+        while (this.foodItems.length < maxFoodItems) {
+            const food = {
+                x: Math.floor(Math.random() * (canvas.width - 20)),
+                y: Math.floor(Math.random() * (canvas.height - 20)),
+                largura: 20,
+                altura: 20
+            };
+            this.foodItems.push(food);
+        }
     }
 
     desenhar() {
         this.foodItems.forEach(food => {
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = '#ff0000';
             ctx.fillRect(food.x, food.y, food.largura, food.altura);
         });
     }
@@ -179,9 +182,13 @@ function loop() {
     const record = parseInt(localStorage.getItem('record')) || 0;
     recordElement.innerText = `Record: ${record}`;
 
+    const speedMeterElement = document.getElementById('speed-meter');
+    speedMeterElement.innerText = `Speed: ${snake.speed.toFixed(2)}`;
+
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
     const snakeHead = snake.parts[0];
+
 
     if (snakeHead.x < 0 || snakeHead.x >= canvasWidth || snakeHead.y < 0 || snakeHead.y >= canvasHeight) {
 
@@ -190,22 +197,8 @@ function loop() {
         scoreElement.innerText = 'Score: 0';
         recordElement.innerText = 'Record: 0';
         snake.parts = [new SnakePart(100, 200, 20, 20)];
-        comida.foodItems = [
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 },
-            { x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 }
-        ];
-        snake.speed = 1;
+        comida.foodItems.push({ x: Math.random() * (canvas.width - 20), y: Math.random() * (canvas.height - 20), largura: 20, altura: 20 });
+        snake.speed = 3;
     }
 
     if (comida.foodItems.length === 0) {
